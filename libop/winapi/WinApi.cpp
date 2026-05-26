@@ -2224,11 +2224,13 @@ bool WinApi::ClientToScreen(LONG hwnd, LONG &x, LONG &y) {
 
     point.x = x;
     point.y = y;
-    ::ClientToScreen((HWND)hwnd, &point);
-    x = point.x;
-    y = point.y;
+    if (::ClientToScreen((HWND)hwnd, &point)) {
+        x = point.x;
+        y = point.y;
+        return true;
+    }
 
-    return true;
+    return false;
 }
 long WinApi::FindWindow(const wchar_t *class_name, const wchar_t *title) {
     if (class_name[0] == L'\0')
